@@ -46,26 +46,29 @@ const Home = () => {
 
 
     return (
-        <div className='Home h-screen flex flex-col'>
-            <div className='Header flex p-3 gap-x-4 bg-gray-700 w-screen items-center'>
+        <div className='Home h-screen w-screen flex flex-col'>
+            <div className='Header flex p-3 gap-x-4 bg-gray-700 w-full items-center'>
                 <div onClick={handleBack} className='bg-gray-600 p-2 rounded-md'>Back</div>
                 <div>Documents</div>
             </div>
-            <div className='Folders h-full overflow-x-auto'>
-                <div className='flex h-full'>
-                    {folderTree.map((item, index) => (
-                        item.isDir ? (
-                            <div key={index}>
-                                <Folder dir={item.dir} files={item.files} openItem={openItem}/>
-                            </div>
-                        ) : (
-                            <div key={index}>
-                                <FileInfo file={item.info} />
-                            </div>
-                        )
-                    ))}
+            <div className='overflow-x-hidden h-full'>
+                <div className='Folders h-full overflow-x-auto'>
+                    <div className='flex h-full'>
+                        {folderTree.map((item, index) => (
+                            item.isDir ? (
+                                <div key={index}>
+                                    <Folder dir={item.dir} files={item.files} openItem={openItem}/>
+                                </div>
+                            ) : (
+                                <div key={index}>
+                                    <FileInfo file={item.info} />
+                                </div>
+                            )
+                        ))}
+                    </div>
                 </div>
             </div>
+
         </div>
     )
 }
