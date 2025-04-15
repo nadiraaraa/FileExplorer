@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react'
 
-const Folder = ({ dir, files, openItem }) => {
+const Folder = ({ dir, files, focusItem, currentFocus, openItem }) => {
   const [sortOption, setSortOption] = useState('');
   const dirPaths = dir.split('/');
   const dirDepth = dirPaths.length;
@@ -26,7 +26,7 @@ const Folder = ({ dir, files, openItem }) => {
 
   return (
     <div className='border border-gray-400 h-full w-72 overflow-y-hidden'>
-      <div className='Header flex justify-between w-full p-4 bg-gray-500'>
+      <div className='Header flex justify-between w-full p-2 bg-gray-600'>
         <div>{dir == '.' ? 'Root' : title}</div>
         <div>
           {/* <label htmlFor='sort'>Sort by</label> */}
@@ -48,7 +48,7 @@ const Folder = ({ dir, files, openItem }) => {
           {sortFiles(files).map((item => (
             <li key={item.path}
               onDoubleClick={e => openItem(item, dirDepth)}
-              className='hover:bg-sky-700 flex gap-x-2 items-center'
+              className={`hover:bg-sky-700 flex gap-x-2 px-2 items-center rounded-md ${item == currentFocus ? 'bg-blue-600' : item==focusItem ? 'bg-gray-500' : ''}`}
             >
               <div className={`h-4 w-4 rounded-sm ' ${item.isDirectory ? 'bg-blue-400' : 'bg-white'}`}></div>
               <div>{item.name}</div>

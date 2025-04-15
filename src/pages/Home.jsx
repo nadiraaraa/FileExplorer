@@ -5,7 +5,8 @@ import FileInfo from '../components/FileInfo'
 
 const Home = () => {
     const homeDir = '.';
-    const [folderTree, setFolderTree] = useState([{ dir: homeDir, isDir: true, files: []}]);
+    const [folderTree, setFolderTree] = useState([{ dir: homeDir, isDir: true, files: [], focus: null}]);
+    const [currentFocus, setCurrentFocus] = useState(null)
 
     useEffect(() => {
         const fetchFiles = async (directory) => {
@@ -28,22 +29,26 @@ const Home = () => {
     }, [folderTree]); 
 
     const openItem = (item, depth) => {
-        setFolderTree((prevTree) => [
-            ...prevTree.slice(0, depth),
-            {
-              dir: './' + item.path,
-              isDir: item.isDirectory,
-              ...(item.isDirectory
-                ? { files: [] }
-                : { info: item })
-            }
-          ]);
+        setFolderTree((prevTree) => {
+            const newTree = [
+                    ...prevTree.slice(0, depth),
+                    {
+                    dir: './' + item.path,
+                    isDir: item.isDirectory,
+                    ...(item.isDirectory
+                        ? { files: [] }
+                        : { info: item })
+                    }
+                ];
+            newTree[depth-1].focus = item;
+            return newTree;
+        });
+        setCurrentFocus(item);
     }
 
     const handleBack = () => {
         setFolderTree((prevTree) => prevTree.slice(0, prevTree.length - 1));
     }
-
 
     return (
         <div className='Home h-screen w-screen flex flex-col'>
@@ -57,7 +62,7 @@ const Home = () => {
                         {folderTree.map((item, index) => (
                             item.isDir ? (
                                 <div key={index}>
-                                    <Folder dir={item.dir} files={item.files} openItem={openItem}/>
+                                    <Folder dir={item.dir} files={item.files} focusItem={item.focus} currentFocus={currentFocus} openItem={openItem}/>
                                 </div>
                             ) : (
                                 <div key={index}>
