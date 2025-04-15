@@ -48,7 +48,7 @@ const Folder = ({ dir, files, focusItem, currentFocus, openItem }) => {
           {sortFiles(files).map((item => (
             <li key={item.path}
               onDoubleClick={e => openItem(item, dirDepth)}
-              className={`hover:bg-sky-700 flex gap-x-2 px-2 items-center rounded-md ${item == currentFocus ? 'bg-blue-600' : item==focusItem ? 'bg-gray-500' : ''}`}
+              className={`hover:bg-sky-700 flex gap-x-2 px-2 items-center rounded-md ${item === currentFocus.file ? 'bg-blue-600' : item===focusItem ? 'bg-gray-500' : ''} ${currentFocus.pulse && item===currentFocus.file && ' animate-pulse'}`}
             >
               <div className={`h-4 w-4 rounded-sm ' ${item.isDirectory ? 'bg-blue-400' : 'bg-white'}`}></div>
               <div>{item.name}</div>

@@ -6,7 +6,7 @@ import FileInfo from '../components/FileInfo'
 const Home = () => {
     const homeDir = '.';
     const [folderTree, setFolderTree] = useState([{ dir: homeDir, isDir: true, files: [], focus: null}]);
-    const [currentFocus, setCurrentFocus] = useState(null)
+    const [currentFocus, setCurrentFocus] = useState({file: null, pulse: false});
 
     useEffect(() => {
         const fetchFiles = async (directory) => {
@@ -28,6 +28,14 @@ const Home = () => {
         }
     }, [folderTree]); 
 
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setCurrentFocus({ file: null, pulse: false });
+        }, 2000);
+    
+        return () => clearTimeout(timer);
+    }, [currentFocus.pulse]);
+
     const openItem = (item, depth) => {
         setFolderTree((prevTree) => {
             const newTree = [
@@ -43,12 +51,18 @@ const Home = () => {
             newTree[depth-1].focus = item;
             return newTree;
         });
-        setCurrentFocus(item);
+        setCurrentFocus(prevFocus => ({...prevFocus, file: item}));
+        console.log(currentFocus);
     }
 
     const handleBack = () => {
-        setFolderTree((prevTree) => prevTree.slice(0, prevTree.length - 1));
-    }
+        if (folderTree.length > 1){
+            setFolderTree((prevTree) => prevTree.slice(0, prevTree.length - 1));
+            if (currentFocus.file){
+                setCurrentFocus(prevFocus => ({...prevFocus, pulse: true}));
+            }
+        }
+    } 
 
     return (
         <div className='Home h-screen w-screen flex flex-col'>
