@@ -52,7 +52,6 @@ const Home = () => {
             return newTree;
         });
         setCurrentFocus(prevFocus => ({...prevFocus, file: item}));
-        console.log(currentFocus);
     }
 
     const handleBack = () => {
